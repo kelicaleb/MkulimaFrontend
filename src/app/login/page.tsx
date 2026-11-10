@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 
-export default function login(){ 
+export default function Login(){ 
     const [email, setEmail ] = useState<string>('')
     const [password, setPassword ] = useState<string>('')
     return(

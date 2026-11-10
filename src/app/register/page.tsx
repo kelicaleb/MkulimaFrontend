@@ -15,12 +15,6 @@ export default function register(){
     const [lastName, setLastName ] = useState<string>('')
     const [email, setEmail ] = useState<string>('')
     const[password, setPassword]  = useState<string>('')
-    const [notice, setNotice] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
-
-    const notify = (type: 'success' | 'error', message: string) => {
-        setNotice({ type, message })
-        window.setTimeout(() => setNotice(null), 4000)
-    }
 
     const handleRegister = async(e:any) => { 
         e.preventDefault()
@@ -32,64 +26,15 @@ export default function register(){
                 email:email
             })
             .then((res) => console.log(res.data))
-            notify('success', 'Account created successfully. Redirecting to sign in...')
-            window.setTimeout(() => { window.location.href = '/login' }, 900)
+            window.location.href = '/login'
         }
         catch(err){ 
             console.error("Failed to register user", err)
-            const message = axios.isAxiosError(err) && err.response?.data?.message
-                ? String(err.response.data.message)
-                : 'Registration failed. Please check your details and try again.'
-            notify('error', message)
         }
     }
     
     return(
         <div className="flex min-h-screen flex-col bg-white lg:flex-row">
-            {/* Notification toast */}
-            {notice && (
-                <div
-                    role="status"
-                    aria-live="polite"
-                    className={`fixed right-4 top-4 z-50 flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-xl border p-4 shadow-lg sm:w-full ${
-                        notice.type === 'success'
-                            ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-                            : 'border-red-200 bg-red-50 text-red-900'
-                    }`}
-                >
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                        {notice.type === 'success' ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-emerald-600">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-red-600">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M12 8v4" />
-                                <path d="M12 16h.01" />
-                            </svg>
-                        )}
-                    </span>
-                    <div className="flex-1">
-                        <p className="text-sm font-semibold">
-                            {notice.type === 'success' ? 'Success' : 'Something went wrong'}
-                        </p>
-                        <p className="mt-0.5 text-sm opacity-80">{notice.message}</p>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={() => setNotice(null)}
-                        aria-label="Dismiss notification"
-                        className="shrink-0 rounded-md p-1 opacity-60 transition hover:opacity-100"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                            <path d="M18 6 6 18" />
-                            <path d="m6 6 12 12" />
-                        </svg>
-                    </button>
-                </div>
-            )}
-
             {/* Left half: what Mkulima Ledger is about */}
             <section className="relative flex w-full flex-col justify-between overflow-hidden bg-emerald-950 p-8 text-white lg:w-1/2 lg:p-12">
                 <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />
@@ -142,7 +87,7 @@ export default function register(){
                 </div>
 
                 <p className="relative mt-10 text-xs text-emerald-200/50">
-                    © {new Date().getFullYear()} Mkulima Ledger. Cultivating trust in Kenyan agriculture.
+                    © Mkulima Ledger. Cultivating trust in Kenyan agriculture.
                 </p>
             </section>
 
