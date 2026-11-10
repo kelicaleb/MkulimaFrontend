@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mkulima Ledger logo">
+  <defs>
+    <linearGradient id="mkulima-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399" />
+      <stop offset="0.55" stop-color="#10b981" />
+      <stop offset="1" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="mkulima-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fee7" />
+      <stop offset="1" stop-color="#d9f99d" />
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#mkulima-bg)" />
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="16.25" fill="none" stroke="#ecfdf5" stroke-opacity="0.28" stroke-width="1.5" />
+
+  <path d="M32 45V29" fill="none" stroke="#ecfdf5" stroke-width="3" stroke-linecap="round" />
+  <path d="M32 33c0-6.5 4.5-11 11-11 0 6.5-4.5 11-11 11Z" fill="url(#mkulima-leaf)" />
+  <path d="M32 29.5c0-5.5-3.8-9.5-9.5-9.5 0 5.7 3.8 9.5 9.5 9.5Z" fill="#ecfdf5" />
+
+  <rect x="18" y="49" width="5.5" height="5" rx="1.6" fill="#a7f3d0" />
+  <rect x="29.25" y="46" width="5.5" height="8" rx="1.6" fill="#d9f99d" />
+  <rect x="40.5" y="42" width="5.5" height="12" rx="1.6" fill="#ecfdf5" />
+</svg>
