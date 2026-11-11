@@ -89,7 +89,7 @@ export default function register(){
                     </button>
                 </div>
             )}
-            {/* Left half: what Mkulima Ledger is about */}
+            {/* Left half: what MIZANI is about */}
             <section className="relative flex w-full flex-col justify-between overflow-hidden bg-emerald-950 p-8 text-white lg:w-1/2 lg:p-12">
                 {/* Animated background */}
                 <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -103,16 +103,19 @@ export default function register(){
                         <div className="animate-spin-slow-reverse h-full w-full rounded-full border border-dashed border-lime-200/15" />
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="animate-float absolute left-[12%] top-[18%] h-8 w-8 text-emerald-300/30">
-                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 3v5h5" />
+                        <path d="M9 13h6" />
+                        <path d="M9 17h4" />
                     </svg>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="animate-float-slow absolute right-[14%] top-[30%] h-10 w-10 text-lime-200/25" style={{ animationDelay: '1.2s' }}>
-                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                        <path d="M3 3v18h18" />
+                        <path d="M7 15l4-4 3 3 5-6" />
                     </svg>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="animate-float absolute bottom-[20%] left-[22%] h-6 w-6 text-teal-200/30" style={{ animationDelay: '0.6s' }}>
-                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                        <rect x="3" y="7" width="18" height="13" rx="2" />
+                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        <path d="M3 12h18" />
                     </svg>
                     <span className="animate-float absolute left-[30%] top-[32%] h-2 w-2 rounded-full bg-lime-300/60" style={{ animationDelay: '0.4s' }} />
                     <span className="animate-float-slow absolute right-[26%] bottom-[24%] h-1.5 w-1.5 rounded-full bg-emerald-200/60" style={{ animationDelay: '1.8s' }} />
@@ -122,32 +125,34 @@ export default function register(){
                     <div className="flex items-center gap-3">
                         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/15 ring-1 ring-emerald-400/30">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-lime-300">
-                                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                                <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                                <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                                <path d="M7 21h10" />
+                                <path d="M12 3v18" />
+                                <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
                             </svg>
                         </span>
-                        <span className="text-lg font-semibold tracking-tight">Mkulima Ledger</span>
+                        <span className="text-lg font-semibold tracking-tight">MIZANI</span>
                     </div>
 
                     <p className="mt-10 inline-flex rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium uppercase tracking-widest text-lime-300 ring-1 ring-emerald-400/20">
-                        Farm-to-market intelligence
+                        Procurement &amp; Business Intelligence
                     </p>
 
                     <h1 className="mt-5 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-                        A farm-to-market intelligence and transparency platform.
+                        Helping businesses make better commercial decisions.
                     </h1>
 
                     <p className="mt-5 max-w-md text-base leading-relaxed text-emerald-100/80">
-                        Agriculture is the backbone of Kenya&apos;s economy and its food security — and it is where
-                        corruption does the most damage to ordinary people.
+                        MIZANI helps you identify opportunities, evaluate suppliers, assess procurement risks and act
+                        on intelligence that drives better commercial decisions.
                     </p>
 
                     <ul className="mt-8 grid max-w-md grid-cols-1 gap-3 sm:grid-cols-2">
                         {[
-                            "Fake inputs",
-                            "Subsidy leakage",
-                            "Exploitative middlemen",
-                            "Unpredictable prices",
+                            "Tender Intelligence",
+                            "Contractor Intelligence",
+                            "Project Intelligence",
                         ].map((item) => (
                             <li key={item} className="flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2 text-sm text-emerald-50 ring-1 ring-white/10">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0 text-lime-300">
@@ -159,13 +164,13 @@ export default function register(){
                     </ul>
 
                     <p className="mt-8 max-w-md text-sm leading-relaxed text-emerald-100/70">
-                        Mkulima Ledger brings transparency and fair pricing to every link in the chain, from the
-                        farm gate to the market.
+                        Tender Intelligence surfaces relevant opportunities, Contractor Intelligence builds
+                        evidence-based supplier profiles, and Project Intelligence tracks infrastructure delivery.
                     </p>
                 </div>
 
                 <p className="relative mt-10 text-xs text-emerald-200/50">
-                    © Mkulima Ledger. Cultivating trust in Kenyan agriculture.
+                    © MIZANI. Turning procurement data into commercial advantage.
                 </p>
             </section>
 
@@ -174,7 +179,7 @@ export default function register(){
                 <div className="liquid-form w-full max-w-md rounded-3xl p-8 ring-1 ring-white/60 sm:p-12">
                     <h2 className="text-2xl font-bold tracking-tight text-stone-900">Create your account</h2>
                     <p className="mt-1.5 text-sm text-stone-500">
-                        Join the platform bringing transparency to Kenya&apos;s food chain.
+                        Join the platform turning procurement data into commercial intelligence.
                     </p>
 
                     <form onSubmit={handleRegister} className="mt-9 space-y-6">
