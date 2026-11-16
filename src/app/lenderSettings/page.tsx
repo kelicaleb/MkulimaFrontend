@@ -3,11 +3,11 @@
 
 import {useState, useEffect } from 'react'
 import type { ReactNode } from "react"
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation"
 import axios from 'axios'; 
-import ThemeToggle from "@/components/ThemeToggle"
+import ThemeToggle from "@/components/ThemeToggle";
 
 
 interface User{ 
