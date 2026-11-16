@@ -1,7 +1,7 @@
 "use client"
 
 
-import {useState } from 'react'
+import {useState, useEffect } from 'react'
 import axios from 'axios'
 
 
@@ -24,6 +24,8 @@ export default function loginRegister(){
             localStorage.setItem("user_id", res.data.id)
             setNotice({ type: 'success', message: 'Welcome back! Redirecting you to your lender workspace...' })
             setTimeout(() => { window.location.href = '/loginLender' }, 1200)
+            window.location.href = '/lenderHomepage'
+
 
         }
         catch(err){ 
@@ -42,6 +44,9 @@ export default function loginRegister(){
             setTimeout(() => setNotice(null), 6000)
         }
     }
+    useEffect(() => { 
+        localStorage.setItem("user_id", "null")
+    },[])
     return(
         <div className="flex min-h-screen flex-col bg-white lg:flex-row">
             {notice && (

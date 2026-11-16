@@ -9,10 +9,11 @@ interface Tender{
     id:number, 
     lender_id:number, 
     title:string, 
-    description:string, 
     budget:number, 
     deadline:string, 
-    category:string
+    category:string,    
+    description:string 
+
 }
 
 const PALETTE = [
@@ -89,6 +90,11 @@ const GLASS_PANEL =
 export default function Tenders(){
     const [applications, setApplications ] = useState<Tender[]>([])
     useEffect(() => { 
+        if(localStorage.getItem("user_id") == "null"){ 
+            window.location.href = "/login"
+        }
+    },[])
+    useEffect(() => { 
         const fetchData = async()=> { 
             try{ 
                 await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tender`)
@@ -99,6 +105,9 @@ export default function Tenders(){
             }
         }
         fetchData()
+    },[])
+    useEffect(() => { 
+        console.log("this is the user id", localStorage.getItem("user_id"))
     },[])
 
     const totalBudget = applications.reduce((sum, tender) => sum + Number(tender.budget || 0), 0)

@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   description:
     "MIZANI is a procurement and business intelligence platform helping businesses identify opportunities, evaluate suppliers, assess procurement risks and make better commercial decisions.",
   icons: {
-    icon: "/mkulima-logo.svg",
-    shortcut: "/mkulima-logo.svg",
-    apple: "/mkulima-logo.svg",
+    icon: "/mizani-logo.svg",
+    shortcut: "/mizani-logo.svg",
+    apple: "/mizani-logo.svg",
   },
 };
 

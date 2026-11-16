@@ -19,6 +19,7 @@ export default function Login(){
             })
             console.log(res.data)
             const name = res.data?.first_name ? `, ${res.data.first_name}` : ''
+            localStorage.setItem("user_id", res.data.id)
             setNotice({ type: 'success', message: `Welcome back${name}! Redirecting you to your dashboard...` })
             setTimeout(() => { window.location.href = "/" }, 1200)
         }

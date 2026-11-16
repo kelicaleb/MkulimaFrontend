@@ -1,5 +1,10 @@
+"use client"
+
+
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import axios from 'axios'
+import { useEffect } from 'react'
 
 const categories = ["Construction", "ICT & Software", "Supply & Delivery", "Consultancy"];
 
@@ -33,7 +38,28 @@ const stats = [
   { value: "1,200+", label: "Verified buyers" },
 ];
 
+
 export default function Home() {
+  useEffect(() => { 
+    const fetchRole = async()=> { 
+      const user_id = localStorage.getItem("user_id")
+      try{ 
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/userRole/${user_id}`)
+        if(res.data == "Lender" ){ 
+          window.location.href = "/loginLender"
+        }
+        else if(localStorage.getItem("user_id") == "null"){ 
+          window.location.href = '/login'
+        }
+        
+      }
+      catch(err){ 
+        console.error("Failed to find user role", err)
+        window.location.href = '/login'
+      }
+    }
+    fetchRole()
+  },[])
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden">
       {/* Ambient backdrop */}

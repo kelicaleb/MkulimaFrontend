@@ -6,6 +6,7 @@ import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Tenders", href: "/tenders", live: true },
   { label: "Suppliers", href: "#suppliers" },
   { label: "Projects", href: "#projects" },
@@ -29,7 +30,7 @@ export default function Navbar() {
           >
             <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl ring-1 ring-white/60 transition-transform duration-300 group-hover:scale-105 dark:ring-white/10">
               <Image
-                src="/mkulima-logo.svg"
+                src="/mizani-logo.svg"
                 alt="MIZANI logo"
                 width={36}
                 height={36}

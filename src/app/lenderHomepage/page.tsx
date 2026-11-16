@@ -88,7 +88,7 @@ const BUCKET_META: Record<Urgency, { label: string; hint: string; color: string 
 }
 
 const ACCENTS = {
-  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-300", stroke: "#10b981" },
+  emerald: { bg: "bg-cyan-500/10", text: "text-emerald-600 dark:text-emerald-300", stroke: "#10b981" },
   cyan: { bg: "bg-cyan-500/10", text: "text-cyan-600 dark:text-cyan-300", stroke: "#06b6d4" },
   indigo: { bg: "bg-indigo-500/10", text: "text-indigo-600 dark:text-indigo-300", stroke: "#6366f1" },
   amber: { bg: "bg-amber-500/10", text: "text-amber-600 dark:text-amber-300", stroke: "#f59e0b" },
@@ -163,10 +163,9 @@ const ICONS: Record<string, ReactNode> = {
 const NAV_ITEMS: { label: string; href: string; icon: ReactNode; active?: boolean }[] = [
   { label: "Overview", href: "#overview", icon: ICONS.grid, active: true },
   { label: "Portfolio", href: "#portfolio", icon: ICONS.pie },
-  { label: "Tenders", href: "/tenders", icon: ICONS.file },
+  { label: "Tenders", href: "/lenderTender", icon: ICONS.file },
   { label: "Add Tender", href: "/addTender", icon: ICONS.plus },
-  { label: "Insights", href: "#insights", icon: ICONS.spark },
-  { label: "Settings", href: "#settings", icon: ICONS.settings },
+  { label: "Settings", href: "/lenderSettings", icon: ICONS.settings },
 ]
 
 function toNumber(value: number | string | null | undefined): number {
@@ -409,20 +408,20 @@ function allocationDisplay(byCategory: CategoryStat[]): CategoryStat[] {
 function AmbientBackground() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-[#f5f7f3] to-cyan-50 dark:from-[#050b09] dark:via-[#070d0a] dark:to-[#04120f]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-[#f3f6fa] to-indigo-50 dark:from-[#040815] dark:via-[#070d1f] dark:to-[#08162f]" />
       <div
         className="absolute inset-0 opacity-[0.35] dark:opacity-[0.14]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(16,185,129,0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.14) 1px, transparent 1px)",
+            "linear-gradient(to right, rgba(6,182,212,0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,182,212,0.14) 1px, transparent 1px)",
           backgroundSize: "58px 58px",
           maskImage: "radial-gradient(ellipse 80% 60% at 40% 0%, #000 35%, transparent 100%)",
           WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 40% 0%, #000 35%, transparent 100%)",
         }}
       />
-      <div className="animate-drift absolute -left-24 top-0 h-80 w-80 rounded-full bg-emerald-400/25 blur-3xl dark:bg-emerald-500/15" />
-      <div className="animate-drift-reverse absolute right-0 top-24 h-96 w-96 rounded-full bg-cyan-300/25 blur-3xl dark:bg-cyan-500/10" />
-      <div className="animate-glow absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-lime-300/20 blur-3xl dark:bg-teal-500/10" />
+      <div className="animate-drift absolute -left-24 top-0 h-80 w-80 rounded-full bg-cyan-400/25 blur-3xl dark:bg-cyan-500/15" />
+      <div className="animate-drift-reverse absolute right-0 top-24 h-96 w-96 rounded-full bg-indigo-300/25 blur-3xl dark:bg-indigo-500/10" />
+      <div className="animate-glow absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl dark:bg-sky-500/10" />
     </div>
   )
 }
@@ -442,18 +441,18 @@ function Sidebar({
         <div className="liquid-glass flex h-full flex-col overflow-hidden rounded-[30px] p-4">
           <Link href="/" className="flex items-center gap-3 rounded-2xl px-2 py-2">
             <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl ring-1 ring-white/60 dark:ring-white/10">
-              <Image src="/mkulima-logo.svg" alt="MIZANI" width={40} height={40} className="h-10 w-10" priority />
+              <Image src="/mizani-logo.svg" alt="MIZANI" width={40} height={40} className="h-10 w-10" priority />
             </span>
             <span className="flex flex-col leading-none">
-              <span className="text-base font-bold tracking-tight text-stone-900 dark:text-white">MIZANI</span>
-              <span className="mt-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-emerald-700/70 dark:text-emerald-300/70">
+              <span className="text-base font-bold tracking-tight text-slate-900 dark:text-white">MIZANI</span>
+              <span className="mt-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-cyan-700/70 dark:text-cyan-300/70">
                 Lender workspace
               </span>
             </span>
           </Link>
 
           <nav className="mt-6 flex-1">
-            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400 dark:text-stone-500">
+            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
               Menu
             </p>
             <ul className="space-y-1">
@@ -463,14 +462,14 @@ function Sidebar({
                     href={item.href}
                     className={`group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition ${
                       item.active
-                        ? "bg-emerald-500/10 text-emerald-800 ring-1 ring-emerald-500/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:ring-emerald-400/20"
-                        : "text-stone-600 hover:bg-white/50 hover:text-stone-900 dark:text-stone-300 dark:hover:bg-white/10 dark:hover:text-white"
+                        ? "bg-cyan-500/10 text-cyan-800 ring-1 ring-cyan-500/20 dark:bg-cyan-400/10 dark:text-cyan-200 dark:ring-cyan-400/20"
+                        : "text-slate-600 hover:bg-white/50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                     }`}
                   >
                     <span className="opacity-80">{item.icon}</span>
                     {item.label}
                     {item.active && (
-                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]" />
+                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-cyan-500 shadow-[0_0_0_3px_rgba(6,182,212,0.18)]" />
                     )}
                   </a>
                 </li>
@@ -480,22 +479,22 @@ function Sidebar({
 
           <div className="mt-4 space-y-3">
             <div className="rounded-2xl border border-white/60 bg-white/40 p-3 dark:border-white/10 dark:bg-white/5">
-              <p className="text-[11px] font-semibold text-stone-700 dark:text-stone-200">Portfolio scope</p>
-              <p className="mt-1 text-[11px] leading-relaxed text-stone-500 dark:text-stone-400">
-                Tenders linked by <span className="font-mono text-emerald-700 dark:text-emerald-300">lender_id</span>{" "}
-                to <span className="font-mono text-emerald-700 dark:text-emerald-300">users.id</span>
+              <p className="text-[11px] font-semibold text-slate-700 dark:text-slate-200">Portfolio scope</p>
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+                Tenders linked by <span className="font-mono text-cyan-700 dark:text-cyan-300">lender_id</span>{" "}
+                to <span className="font-mono text-cyan-700 dark:text-cyan-300">users.id</span>
               </p>
             </div>
 
             <div className="flex items-center gap-3 rounded-2xl border border-white/60 bg-white/40 p-2.5 dark:border-white/10 dark:bg-white/5">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-cyan-600 text-xs font-bold text-white shadow-inner">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 text-xs font-bold text-white shadow-inner">
                 {getInitials(lenderName)}
               </span>
               <span className="min-w-0 flex-1 leading-tight">
-                <span className="block truncate text-xs font-semibold text-stone-800 dark:text-stone-100">
+                <span className="block truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
                   {lenderName || "Lender"}
                 </span>
-                <span className="block truncate text-[10px] text-stone-500 dark:text-stone-400">
+                <span className="block truncate text-[10px] text-slate-500 dark:text-slate-400">
                   ID {lenderId ?? "—"}
                 </span>
               </span>
@@ -504,7 +503,7 @@ function Sidebar({
                 onClick={onSignOut}
                 aria-label="Sign out"
                 title="Sign out"
-                className="rounded-full p-1.5 text-stone-400 transition hover:bg-white/60 hover:text-rose-500 dark:hover:bg-white/10"
+                className="rounded-full p-1.5 text-slate-400 transition hover:bg-white/60 hover:text-rose-500 dark:hover:bg-white/10"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -566,22 +565,22 @@ function StatCard({
       />
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-stone-400">{label}</p>
-          <p className="mt-2 truncate text-2xl font-bold tracking-tight text-stone-900 dark:text-white">{value}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{label}</p>
+          <p className="mt-2 truncate text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{value}</p>
         </div>
         <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ring-1 ring-white/50 dark:ring-white/10 ${accent.bg} ${accent.text}`}>
           {icon}
         </span>
       </div>
       <div className="mt-4 flex items-end justify-between gap-2">
-        <p className="text-[11px] leading-snug text-stone-500 dark:text-stone-400">{hint}</p>
+        <p className="text-[11px] leading-snug text-slate-500 dark:text-slate-400">{hint}</p>
         <Sparkline data={spark} stroke={accent.stroke} />
       </div>
       {typeof delta === "number" && (
         <span
           className={`mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
             delta >= 0
-              ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+              ? "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300"
               : "bg-rose-500/10 text-rose-600 dark:text-rose-300"
           }`}
         >
@@ -641,11 +640,11 @@ function DonutChart({ data, total }: { data: CategoryStat[]; total: number }) {
         ))}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-stone-400 dark:text-stone-500">
+        <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500">
           Committed
         </span>
-        <span className="mt-1 text-xl font-bold tracking-tight text-stone-900 dark:text-white">{money(total)}</span>
-        <span className="mt-0.5 text-[11px] text-stone-500 dark:text-stone-400">
+        <span className="mt-1 text-xl font-bold tracking-tight text-slate-900 dark:text-white">{money(total)}</span>
+        <span className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
           {data.reduce((sum, entry) => sum + entry.count, 0)} tenders
         </span>
       </div>
@@ -719,7 +718,7 @@ function StatusPill({ urgency }: { urgency: Urgency }) {
     overdue: { label: "Overdue", className: "bg-rose-500/10 text-rose-600 ring-rose-500/20 dark:text-rose-300" },
     closing_soon: { label: "Closing soon", className: "bg-amber-500/10 text-amber-600 ring-amber-500/20 dark:text-amber-300" },
     this_month: { label: "Active", className: "bg-cyan-500/10 text-cyan-600 ring-cyan-500/20 dark:text-cyan-300" },
-    later: { label: "Active", className: "bg-emerald-500/10 text-emerald-600 ring-emerald-500/20 dark:text-emerald-300" },
+    later: { label: "Active", className: "bg-cyan-500/10 text-emerald-600 ring-emerald-500/20 dark:text-emerald-300" },
   }
   const style = styles[urgency]
   return (
@@ -744,8 +743,8 @@ function DashboardFallback() {
       <AmbientBackground />
       <div className="liquid-glass relative flex flex-col items-center gap-3 rounded-3xl px-10 py-10 text-center">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500/25 border-t-emerald-500" />
-        <p className="text-sm font-semibold text-stone-700 dark:text-stone-200">Loading lender portfolio</p>
-        <p className="text-xs text-stone-500 dark:text-stone-400">
+        <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">Loading lender portfolio</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Scoping tenders by{" "}
           <span className="font-mono text-emerald-700/80 dark:text-emerald-300/80">lender_id</span>
         </p>
@@ -865,9 +864,9 @@ function LenderHomepageContent() {
   const toneStyles: Record<Insight["tone"], { ring: string; bg: string; text: string; dot: string }> = {
     positive: {
       ring: "ring-emerald-500/20",
-      bg: "bg-emerald-500/10",
-      text: "text-emerald-700 dark:text-emerald-300",
-      dot: "bg-emerald-500",
+      bg: "bg-cyan-500/10",
+      text: "text-cyan-700 dark:text-cyan-300",
+      dot: "bg-cyan-500",
     },
     warning: {
       ring: "ring-amber-500/20",
@@ -878,7 +877,7 @@ function LenderHomepageContent() {
     neutral: {
       ring: "ring-stone-500/15",
       bg: "bg-stone-500/10",
-      text: "text-stone-600 dark:text-stone-300",
+      text: "text-slate-600 dark:text-slate-300",
       dot: "bg-stone-400",
     },
   }
@@ -894,13 +893,13 @@ function LenderHomepageContent() {
         <header className="sticky top-0 z-30 flex items-center justify-between gap-3 px-3 pt-3 lg:hidden">
           <div className="liquid-glass flex w-full items-center justify-between gap-2 rounded-2xl px-3 py-2">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/mkulima-logo.svg" alt="MIZANI" width={30} height={30} className="h-8 w-8 rounded-lg" priority />
-              <span className="text-sm font-bold tracking-tight text-stone-900 dark:text-white">MIZANI</span>
+              <Image src="/mizani-logo.svg" alt="MIZANI" width={30} height={30} className="h-8 w-8 rounded-lg" priority />
+              <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">MIZANI</span>
             </Link>
             <div className="flex items-center gap-2">
               <a
                 href="#tenders"
-                className="rounded-full px-3 py-1.5 text-xs font-semibold text-stone-600 hover:text-emerald-700 dark:text-stone-300"
+                className="rounded-full px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-cyan-700 dark:text-slate-300"
               >
                 Tenders
               </a>
@@ -915,21 +914,21 @@ function LenderHomepageContent() {
             <header className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="liquid-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-200">
+                  <span className="liquid-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-800 dark:text-cyan-200">
                     <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-500 opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-500" />
                     </span>
                     Live portfolio
                   </span>
-                  <span className="rounded-full border border-white/60 bg-white/40 px-3 py-1 font-mono text-[10px] font-medium text-stone-500 dark:border-white/10 dark:bg-white/5 dark:text-stone-400">
+                  <span className="rounded-full border border-white/60 bg-white/40 px-3 py-1 font-mono text-[10px] font-medium text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
                     lender_id: {lenderId ?? "—"}
                   </span>
                 </div>
-                <h1 className="mt-3 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl dark:text-white">
+                <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
                   Portfolio overview
                 </h1>
-                <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+                <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                   {dashboard.lenderName || lenderName
                     ? `Welcome back, ${dashboard.lenderName || lenderName}. `
                     : "Welcome back. "}
@@ -946,8 +945,8 @@ function LenderHomepageContent() {
                       onClick={() => setRange(months)}
                       className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                         range === months
-                          ? "bg-emerald-600 text-white shadow-[0_6px_14px_-6px_rgba(5,150,105,0.7)]"
-                          : "text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white"
+                          ? "bg-cyan-600 text-white shadow-[0_6px_14px_-6px_rgba(8,145,178,0.7)]"
+                          : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
                       }`}
                     >
                       {months}M
@@ -958,7 +957,7 @@ function LenderHomepageContent() {
                 <button
                   type="button"
                   onClick={() => load(true)}
-                  className="liquid-pill inline-flex items-center gap-2 rounded-full px-3.5 py-2.5 text-xs font-semibold text-stone-700 transition hover:text-emerald-700 dark:text-stone-200 dark:hover:text-emerald-200"
+                  className="liquid-pill inline-flex items-center gap-2 rounded-full px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-200"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -994,26 +993,34 @@ function LenderHomepageContent() {
 
             {/* Notices */}
             {!lenderId && (
-              <div className="mt-6 flex flex-col gap-3 rounded-3xl border border-amber-400/40 bg-amber-500/10 p-5 text-amber-900 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between dark:text-amber-200">
-                <div>
-                  <p className="text-sm font-semibold">No lender session found</p>
-                  <p className="mt-1 text-xs opacity-80">
-                    Sign in as a lender, or open this page with <span className="font-mono">?lender_id=1</span> to preview
-                    a portfolio.
-                  </p>
+              <div
+                role="alert"
+                className="fixed right-4 top-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-3 rounded-2xl border border-amber-300/60 bg-[linear-gradient(180deg,rgba(255,251,235,0.96)_0%,rgba(254,243,199,0.9)_100%)] p-4 text-amber-900 shadow-[0_18px_45px_-18px_rgba(146,64,14,0.45)] backdrop-blur-2xl backdrop-saturate-150 dark:border-amber-400/30 dark:bg-[linear-gradient(180deg,rgba(69,26,3,0.92)_0%,rgba(120,53,15,0.55)_100%)] dark:text-amber-100"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-500 text-[11px] font-bold text-white">!</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold">No lender session found</p>
+                    <p className="mt-1 text-xs opacity-80">
+                      Sign in as a lender, or open this page with <span className="font-mono">?lender_id=1</span> to preview a portfolio.
+                    </p>
+                  </div>
                 </div>
-                <Link href="/loginLender" className="liquid-button inline-flex w-fit items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white">
+                <Link href="/loginLender" className="inline-flex w-fit items-center gap-1.5 rounded-full bg-cyan-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-cyan-500">
                   Sign in as lender
                 </Link>
               </div>
             )}
 
             {error && (
-              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-rose-400/40 bg-rose-500/10 p-4 text-rose-900 backdrop-blur-xl dark:text-rose-200">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-500 text-[11px] font-bold text-white">
-                  !
-                </span>
-                <div>
+              <div
+                role="alert"
+                aria-live="assertive"
+                className={`fixed right-4 z-50 flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 overflow-hidden rounded-2xl border border-red-300/60 bg-[linear-gradient(180deg,rgba(254,242,242,0.95)_0%,rgba(254,226,226,0.88)_100%)] p-4 text-red-900 shadow-[0_18px_45px_-18px_rgba(12,74,110,0.55)] backdrop-blur-2xl backdrop-saturate-150 dark:border-red-400/30 dark:bg-[linear-gradient(180deg,rgba(69,10,10,0.92)_0%,rgba(127,29,29,0.55)_100%)] dark:text-red-50 ${!lenderId ? "top-[10.5rem]" : "top-4"}`}
+              >
+                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/20" />
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-600 text-[11px] font-bold text-white">!</span>
+                <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold">Could not refresh portfolio</p>
                   <p className="mt-0.5 text-xs opacity-80">{error}</p>
                 </div>
@@ -1075,17 +1082,17 @@ function LenderHomepageContent() {
               <div className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-8">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Funding trend</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Funding trend</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                       Capital committed across the last {range} months
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                      <span className="h-2 w-2 rounded-full bg-cyan-500" />
                       Monthly commitment
                     </span>
-                    <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                    <span className="rounded-full bg-cyan-500/10 px-2.5 py-1 text-[11px] font-semibold text-cyan-700 dark:text-cyan-300">
                       {money(monthly.reduce((sum, entry) => sum + entry.total, 0))}
                     </span>
                   </div>
@@ -1095,19 +1102,19 @@ function LenderHomepageContent() {
                 </div>
                 <div className="mt-1 grid grid-cols-3 gap-2 border-t border-white/60 pt-3 dark:border-white/10">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">This period</p>
-                    <p className="mt-1 text-sm font-semibold text-stone-900 dark:text-white">
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">This period</p>
+                    <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">
                       {money(monthly.reduce((sum, entry) => sum + entry.total, 0))}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Tenders added</p>
-                    <p className="mt-1 text-sm font-semibold text-stone-900 dark:text-white">
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">Tenders added</p>
+                    <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">
                       {monthly.reduce((sum, entry) => sum + entry.count, 0)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Momentum</p>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">Momentum</p>
                     <p className={`mt-1 text-sm font-semibold ${monthDelta !== null && monthDelta < 0 ? "text-rose-500" : "text-emerald-600 dark:text-emerald-300"}`}>
                       {monthDelta === null ? "—" : `${monthDelta >= 0 ? "+" : ""}${monthDelta.toFixed(1)}%`}
                     </p>
@@ -1119,10 +1126,10 @@ function LenderHomepageContent() {
               <div className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Portfolio allocation</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Capital by category</p>
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Portfolio allocation</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Capital by category</p>
                   </div>
-                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-stone-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-slate-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                     {dashboard.byCategory.length} sectors
                   </span>
                 </div>
@@ -1131,18 +1138,18 @@ function LenderHomepageContent() {
                   <DonutChart data={allocation} total={dashboard.total} />
                   <ul className="w-full space-y-2">
                     {allocation.length === 0 && (
-                      <li className="rounded-xl bg-white/40 px-3 py-2 text-center text-xs text-stone-500 dark:bg-white/5 dark:text-stone-400">
+                      <li className="rounded-xl bg-white/40 px-3 py-2 text-center text-xs text-slate-500 dark:bg-white/5 dark:text-slate-400">
                         No allocation data yet
                       </li>
                     )}
                     {allocation.map((entry) => (
                       <li key={entry.category} className="flex items-center gap-2.5">
                         <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: entry.color }} />
-                        <span className="min-w-0 flex-1 truncate text-xs font-medium text-stone-700 dark:text-stone-200">
+                        <span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-700 dark:text-slate-200">
                           {entry.category}
                         </span>
-                        <span className="text-xs font-semibold text-stone-900 dark:text-white">{money(entry.total)}</span>
-                        <span className="w-10 text-right text-[11px] text-stone-400 dark:text-stone-500">
+                        <span className="text-xs font-semibold text-slate-900 dark:text-white">{money(entry.total)}</span>
+                        <span className="w-10 text-right text-[11px] text-slate-400 dark:text-slate-500">
                           {entry.share.toFixed(0)}%
                         </span>
                       </li>
@@ -1155,8 +1162,8 @@ function LenderHomepageContent() {
               <div className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Deadline exposure</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Where your commitments sit in time</p>
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Deadline exposure</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Where your commitments sit in time</p>
                   </div>
                   {dashboard.overdue > 0 && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-2.5 py-1 text-[10px] font-semibold text-rose-600 ring-1 ring-rose-500/20 dark:text-rose-300">
@@ -1187,23 +1194,23 @@ function LenderHomepageContent() {
                     <li key={bucket.key} className="flex items-center gap-3">
                       <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: bucket.color }} />
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs font-semibold text-stone-800 dark:text-stone-100">{bucket.label}</p>
-                        <p className="text-[10px] text-stone-400 dark:text-stone-500">{bucket.hint}</p>
+                        <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">{bucket.label}</p>
+                        <p className="text-[10px] text-slate-400 dark:text-slate-500">{bucket.hint}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs font-semibold text-stone-900 dark:text-white">{bucket.count}</p>
-                        <p className="text-[10px] text-stone-400 dark:text-stone-500">{money(bucket.total)}</p>
+                        <p className="text-xs font-semibold text-slate-900 dark:text-white">{bucket.count}</p>
+                        <p className="text-[10px] text-slate-400 dark:text-slate-500">{money(bucket.total)}</p>
                       </div>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-5 rounded-2xl border border-white/60 bg-white/40 p-3 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-[10px] uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Next deadline</p>
-                  <p className="mt-1 truncate text-xs font-semibold text-stone-800 dark:text-stone-100">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">Next deadline</p>
+                  <p className="mt-1 truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
                     {dashboard.nextDeadline ? dashboard.nextDeadline.title : "Nothing upcoming"}
                   </p>
-                  <p className="mt-0.5 text-[11px] text-stone-500 dark:text-stone-400">
+                  <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
                     {dashboard.nextDeadline
                       ? `${formatDate(dashboard.nextDeadline.deadline)} · ${deadlineLabel(dashboard.nextDeadline.daysRemaining)}`
                       : "Add a tender to start tracking deadlines"}
@@ -1215,17 +1222,17 @@ function LenderHomepageContent() {
               <div className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-7">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Largest commitments</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Your biggest capital deployments</p>
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Largest commitments</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Your biggest capital deployments</p>
                   </div>
-                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-stone-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-slate-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                     Top {topCommitments.length}
                   </span>
                 </div>
 
                 <ul className="mt-4 space-y-3">
                   {topCommitments.length === 0 && (
-                    <li className="rounded-2xl bg-white/40 px-4 py-6 text-center text-xs text-stone-500 dark:bg-white/5 dark:text-stone-400">
+                    <li className="rounded-2xl bg-white/40 px-4 py-6 text-center text-xs text-slate-500 dark:bg-white/5 dark:text-slate-400">
                       No commitments recorded yet.
                     </li>
                   )}
@@ -1238,15 +1245,15 @@ function LenderHomepageContent() {
                     return (
                       <li key={tender.id}>
                         <div className="flex items-center gap-3">
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/60 text-[11px] font-bold text-stone-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/60 text-[11px] font-bold text-slate-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                             {index + 1}
                           </span>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-baseline justify-between gap-2">
-                              <p className="truncate text-xs font-semibold text-stone-800 dark:text-stone-100">
+                              <p className="truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
                                 {tender.title}
                               </p>
-                              <p className="shrink-0 text-xs font-semibold text-stone-900 dark:text-white">
+                              <p className="shrink-0 text-xs font-semibold text-slate-900 dark:text-white">
                                 {money(tender.budgetValue)}
                               </p>
                             </div>
@@ -1261,7 +1268,7 @@ function LenderHomepageContent() {
                 </ul>
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/60 pt-3 dark:border-white/10">
-                  <p className="text-[11px] text-stone-500 dark:text-stone-400">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Average ticket {money(dashboard.average)} across {totalCount} tenders
                   </p>
                   <a href="#tenders" className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200">
@@ -1277,10 +1284,10 @@ function LenderHomepageContent() {
               <div id="insights" className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Analyst notes</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Automated portfolio read-out</p>
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Analyst notes</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Automated portfolio read-out</p>
                   </div>
-                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 ring-1 ring-white/50 dark:text-emerald-300 dark:ring-white/10">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500/10 text-emerald-600 ring-1 ring-white/50 dark:text-emerald-300 dark:ring-white/10">
                     {ICONS.spark}
                   </span>
                 </div>
@@ -1294,7 +1301,7 @@ function LenderHomepageContent() {
                           <span className={`h-1.5 w-1.5 rounded-full ${tone.dot}`} />
                           <p className={`text-[11px] font-semibold ${tone.text}`}>{insight.title}</p>
                         </div>
-                        <p className="mt-1 text-[11px] leading-relaxed text-stone-600 dark:text-stone-300">
+                        <p className="mt-1 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
                           {insight.detail}
                         </p>
                       </li>
@@ -1307,17 +1314,17 @@ function LenderHomepageContent() {
               <div className="liquid-glass-panel relative overflow-hidden rounded-3xl p-5 xl:col-span-8">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Category performance</h2>
-                    <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Exposure, average ticket and share</p>
+                    <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Category performance</h2>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Exposure, average ticket and share</p>
                   </div>
-                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-stone-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                  <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-slate-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                     {dashboard.byCategory.length} categories
                   </span>
                 </div>
 
                 <div className="mt-4 overflow-x-auto scrollbar-none">
                   <div className="min-w-[520px]">
-                    <div className="grid grid-cols-12 gap-3 border-b border-white/60 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:border-white/10 dark:text-stone-500">
+                    <div className="grid grid-cols-12 gap-3 border-b border-white/60 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:border-white/10 dark:text-slate-500">
                       <span className="col-span-4">Category</span>
                       <span className="col-span-2 text-right">Tenders</span>
                       <span className="col-span-2 text-right">Avg ticket</span>
@@ -1326,22 +1333,22 @@ function LenderHomepageContent() {
                     </div>
                     <ul className="divide-y divide-white/50 dark:divide-white/5">
                       {dashboard.byCategory.length === 0 && (
-                        <li className="py-6 text-center text-xs text-stone-500 dark:text-stone-400">No category data yet</li>
+                        <li className="py-6 text-center text-xs text-slate-500 dark:text-slate-400">No category data yet</li>
                       )}
                       {dashboard.byCategory.map((entry) => (
                         <li key={entry.category} className="grid grid-cols-12 items-center gap-3 py-2.5">
-                          <span className="col-span-4 flex items-center gap-2 truncate text-xs font-medium text-stone-700 dark:text-stone-200">
+                          <span className="col-span-4 flex items-center gap-2 truncate text-xs font-medium text-slate-700 dark:text-slate-200">
                             <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: entry.color }} />
                             <span className="truncate">{entry.category}</span>
                           </span>
-                          <span className="col-span-2 text-right text-xs text-stone-600 dark:text-stone-300">{entry.count}</span>
-                          <span className="col-span-2 text-right text-xs text-stone-600 dark:text-stone-300">{money(entry.average)}</span>
-                          <span className="col-span-2 text-right text-xs font-semibold text-stone-900 dark:text-white">{money(entry.total)}</span>
+                          <span className="col-span-2 text-right text-xs text-slate-600 dark:text-slate-300">{entry.count}</span>
+                          <span className="col-span-2 text-right text-xs text-slate-600 dark:text-slate-300">{money(entry.average)}</span>
+                          <span className="col-span-2 text-right text-xs font-semibold text-slate-900 dark:text-white">{money(entry.total)}</span>
                           <span className="col-span-2 flex items-center justify-end gap-2">
                             <span className="hidden h-1.5 w-12 overflow-hidden rounded-full bg-stone-900/5 sm:block dark:bg-white/10">
                               <span className="block h-full rounded-full" style={{ width: `${entry.share}%`, backgroundColor: entry.color }} />
                             </span>
-                            <span className="text-xs text-stone-500 dark:text-stone-400">{entry.share.toFixed(0)}%</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">{entry.share.toFixed(0)}%</span>
                           </span>
                         </li>
                       ))}
@@ -1357,18 +1364,18 @@ function LenderHomepageContent() {
                 <div className="flex flex-col gap-4 p-5">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h2 className="text-sm font-semibold text-stone-900 dark:text-white">Tender register</h2>
-                      <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">
+                      <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Tender register</h2>
+                      <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                         Every tender linked to your lender profile
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-stone-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                      <span className="rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-slate-500 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                         {filteredTenders.length} of {totalCount}
                       </span>
                       <Link
                         href="/tenders"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/50 px-3 py-1.5 text-[11px] font-semibold text-stone-700 transition hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-stone-200 dark:hover:text-emerald-200"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/50 px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-200"
                       >
                         Browse marketplace
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
@@ -1384,8 +1391,8 @@ function LenderHomepageContent() {
                       onClick={() => setFilter("all")}
                       className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${
                         filter === "all"
-                          ? "bg-emerald-600 text-white shadow-[0_6px_14px_-6px_rgba(5,150,105,0.7)]"
-                          : "bg-white/50 text-stone-600 ring-1 ring-white/60 hover:text-stone-900 dark:bg-white/5 dark:text-stone-300 dark:ring-white/10 dark:hover:text-white"
+                          ? "bg-cyan-600 text-white shadow-[0_6px_14px_-6px_rgba(8,145,178,0.7)]"
+                          : "bg-white/50 text-slate-600 ring-1 ring-white/60 hover:text-slate-900 dark:bg-white/5 dark:text-slate-300 dark:ring-white/10 dark:hover:text-white"
                       }`}
                     >
                       All categories
@@ -1397,8 +1404,8 @@ function LenderHomepageContent() {
                         onClick={() => setFilter(entry.category)}
                         className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${
                           filter === entry.category
-                            ? "bg-stone-900 text-white dark:bg-white dark:text-stone-900"
-                            : "bg-white/50 text-stone-600 ring-1 ring-white/60 hover:text-stone-900 dark:bg-white/5 dark:text-stone-300 dark:ring-white/10 dark:hover:text-white"
+                            ? "bg-stone-900 text-white dark:bg-white dark:text-slate-900"
+                            : "bg-white/50 text-slate-600 ring-1 ring-white/60 hover:text-slate-900 dark:bg-white/5 dark:text-slate-300 dark:ring-white/10 dark:hover:text-white"
                         }`}
                       >
                         <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
@@ -1408,7 +1415,7 @@ function LenderHomepageContent() {
                   </div>
                 </div>
 
-                <div className="hidden grid-cols-12 gap-4 border-y border-white/60 bg-white/30 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 lg:grid dark:border-white/10 dark:bg-white/5 dark:text-stone-500">
+                <div className="hidden grid-cols-12 gap-4 border-y border-white/60 bg-white/30 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 lg:grid dark:border-white/10 dark:bg-white/5 dark:text-slate-500">
                   <span className="col-span-4">Tender</span>
                   <span className="col-span-2">Category</span>
                   <span className="col-span-2">Budget</span>
@@ -1433,10 +1440,10 @@ function LenderHomepageContent() {
 
                   {!loading && filteredTenders.length === 0 && (
                     <div className="px-5 py-12 text-center">
-                      <p className="text-sm font-semibold text-stone-700 dark:text-stone-200">
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                         {totalCount === 0 ? "No tenders linked to this lender yet" : "No tenders in this category"}
                       </p>
-                      <p className="mx-auto mt-1 max-w-sm text-xs text-stone-500 dark:text-stone-400">
+                      <p className="mx-auto mt-1 max-w-sm text-xs text-slate-500 dark:text-slate-400">
                         {totalCount === 0
                           ? "Tenders are scoped by lender_id. Add a tender against this lender to populate the portfolio."
                           : "Choose another category filter to see the rest of your portfolio."}
@@ -1457,35 +1464,35 @@ function LenderHomepageContent() {
                         >
                           <div className="lg:col-span-4">
                             <div className="flex flex-wrap items-center gap-2">
-                              <p className="truncate text-sm font-semibold text-stone-900 dark:text-white">{tender.title}</p>
+                              <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">{tender.title}</p>
                               <StatusPill urgency={tender.urgency} />
                             </div>
-                            <p className="mt-1 line-clamp-1 text-[11px] text-stone-500 dark:text-stone-400">
+                            <p className="mt-1 line-clamp-1 text-[11px] text-slate-500 dark:text-slate-400">
                               {tender.description || "No description provided"}
                             </p>
                           </div>
 
                           <div className="lg:col-span-2">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-stone-600 ring-1 ring-white/70 dark:bg-white/10 dark:text-stone-300 dark:ring-white/10">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/60 px-2.5 py-1 text-[10px] font-semibold text-slate-600 ring-1 ring-white/70 dark:bg-white/10 dark:text-slate-300 dark:ring-white/10">
                               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />
                               {tender.category || "Uncategorised"}
                             </span>
                           </div>
 
                           <div className="lg:col-span-2">
-                            <p className="text-xs font-semibold text-stone-900 dark:text-white">{money(tender.budgetValue)}</p>
-                            <p className="text-[10px] text-stone-400 dark:text-stone-500">{moneyExact(tender.budgetValue)}</p>
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white">{money(tender.budgetValue)}</p>
+                            <p className="text-[10px] text-slate-400 dark:text-slate-500">{moneyExact(tender.budgetValue)}</p>
                           </div>
 
                           <div className="lg:col-span-2">
-                            <p className="text-xs font-medium text-stone-700 dark:text-stone-200">{formatDate(tender.deadline)}</p>
+                            <p className="text-xs font-medium text-slate-700 dark:text-slate-200">{formatDate(tender.deadline)}</p>
                             <p
                               className={`text-[10px] font-semibold ${
                                 tender.urgency === "overdue"
                                   ? "text-rose-500"
                                   : tender.urgency === "closing_soon"
                                     ? "text-amber-600 dark:text-amber-300"
-                                    : "text-stone-400 dark:text-stone-500"
+                                    : "text-slate-400 dark:text-slate-500"
                               }`}
                             >
                               {deadlineLabel(tender.daysRemaining)}
@@ -1500,7 +1507,7 @@ function LenderHomepageContent() {
                                   style={{ width: `${Math.max(tender.share, 2)}%`, backgroundColor: color }}
                                 />
                               </span>
-                              <span className="w-9 text-right text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                              <span className="w-9 text-right text-[11px] font-semibold text-slate-500 dark:text-slate-400">
                                 {tender.share.toFixed(1)}%
                               </span>
                             </div>
@@ -1512,7 +1519,7 @@ function LenderHomepageContent() {
               </div>
             </section>
 
-            <footer className="mt-6 flex flex-col gap-2 px-1 pb-4 text-[11px] text-stone-400 sm:flex-row sm:items-center sm:justify-between dark:text-stone-500">
+            <footer className="mt-6 flex flex-col gap-2 px-1 pb-4 text-[11px] text-slate-400 sm:flex-row sm:items-center sm:justify-between dark:text-slate-500">
               <p>
                 Portfolio scoped by <span className="font-mono text-emerald-700/80 dark:text-emerald-300/80">lender_id</span>{" "}
                 to <span className="font-mono text-emerald-700/80 dark:text-emerald-300/80">users.id</span>.
