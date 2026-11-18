@@ -85,6 +85,12 @@ const GLASS_CARD =
 const GLASS_PANEL =
   "border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.55)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_40px_-16px_rgba(6,78,59,0.35)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(24,36,31,0.9)_0%,rgba(10,17,14,0.85)_100%)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_44px_-16px_rgba(0,0,0,0.8)]"
 
+const APPLICATION_INPUT =
+  "liquid-input w-full rounded-2xl border border-white/60 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500/70 dark:border-white/15 dark:text-white dark:placeholder:text-slate-500"
+
+const APPLY_BUTTON =
+  "group relative w-full overflow-hidden rounded-2xl border border-white/50 bg-[linear-gradient(180deg,rgba(52,211,153,0.92)_0%,rgba(5,150,105,0.95)_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_10px_24px_-12px_rgba(5,150,105,0.6)] transition duration-200 hover:-translate-y-0.5 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-emerald-400/40 sm:w-auto sm:min-w-[11rem] dark:border-white/20"
+
 
 
 export default function Tenders(){
@@ -299,7 +305,7 @@ export default function Tenders(){
                     <div className="flex flex-wrap items-end justify-between gap-3">
                         <div>
                             <h2 className="text-xl font-bold tracking-tight text-stone-900 sm:text-2xl dark:text-white">Opportunity feed</h2>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Every tender currently listed on MIZANI.</p>
+                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Open a tender to view its details and apply.</p>
                         </div>
                         <span className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/50 px-3 py-1.5 text-[11px] font-semibold text-stone-600 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:text-stone-300">
                             <span className="relative flex h-1.5 w-1.5">
@@ -311,68 +317,122 @@ export default function Tenders(){
                     </div>
 
                     {applications.length > 0 && (
-                        <div className={`mt-5 overflow-hidden rounded-3xl ${GLASS_PANEL}`}>
-                            <div className="overflow-x-auto">
-                                <table className="w-full min-w-[860px] border-collapse text-left">
-                                    <thead>
-                                        <tr className="border-b border-white/60 bg-white/30 dark:border-white/10 dark:bg-white/5">
-                                            <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Tender</th>
-                                            <th className="px-3 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Category</th>
-                                            <th className="px-3 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Lender</th>
-                                            <th className="px-3 py-3 text-right text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Budget</th>
-                                            <th className="px-3 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Deadline</th>
-                                            <th className="px-5 py-3 text-right text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Capital share</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-white/50 dark:divide-white/5">
-                                        {applications.map((app, index) => {
-                                            const style = categoryStyle(app.category)
-                                            const share = totalBudget > 0 ? (Number(app.budget || 0) / totalBudget) * 100 : 0
-                                            return (
-                                                <tr key={app.id} className="group transition-colors hover:bg-white/40 dark:hover:bg-white/[0.04]">
-                                                    <td className="px-5 py-4">
-                                                        <div className="flex items-center gap-3">
-                                                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/60 bg-white/50 text-[10px] font-bold text-stone-500 dark:border-white/10 dark:bg-white/5 dark:text-stone-300">
-                                                                {String(index + 1).padStart(2, "0")}
-                                                            </span>
-                                                            <div className="min-w-0">
-                                                                <p className="truncate text-sm font-semibold text-stone-900 dark:text-white">{app.title}</p>
-                                                                <p className="mt-0.5 line-clamp-1 max-w-[280px] text-[11px] text-stone-500 dark:text-stone-400">{app.description || "No description provided."}</p>
+                        <div className="mt-5 space-y-4">
+                            {applications.map((app, index) => {
+                                const style = categoryStyle(app.category)
+                                const share = totalBudget > 0 ? (Number(app.budget || 0) / totalBudget) * 100 : 0
+                                return (
+                                    <details key={app.id} className={`group overflow-hidden rounded-3xl ${GLASS_PANEL}`}>
+                                        <summary className="flex cursor-pointer list-none flex-wrap items-center gap-x-4 gap-y-3 px-5 py-4 [&::-webkit-details-marker]:hidden sm:flex-nowrap">
+                                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/60 bg-white/50 text-[10px] font-bold text-stone-500 dark:border-white/10 dark:bg-white/5 dark:text-stone-300">
+                                                {String(index + 1).padStart(2, "0")}
+                                            </span>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="truncate text-sm font-semibold text-stone-900 dark:text-white">{app.title}</p>
+                                                <p className="mt-0.5 line-clamp-1 text-[11px] text-stone-500 dark:text-stone-400">{app.description || "No description provided."}</p>
+                                            </div>
+                                            <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ring-1 ${style.chip}`}>
+                                                <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
+                                                {app.category || "Uncategorised"}
+                                            </span>
+                                            <span className="shrink-0 text-sm font-semibold text-stone-900 dark:text-white">{money(Number(app.budget))}</span>
+                                            <span className="flex shrink-0 items-center gap-2 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                                                {formatDeadline(app.deadline)}
+                                                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/60 bg-white/50 transition-transform group-open:rotate-180 dark:border-white/10 dark:bg-white/5">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                                                        <path d="m6 9 6 6 6-6" />
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </summary>
+
+                                        <div className="border-t border-white/60 px-5 py-6 dark:border-white/10 sm:px-6">
+                                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                                                <div className="lg:col-span-5">
+                                                    <div className="flex items-center justify-between gap-3">
+                                                        <div>
+                                                            <h3 className="text-sm font-semibold text-stone-900 dark:text-white">Tender details</h3>
+                                                            <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">TENDER #{app.id}</p>
+                                                        </div>
+                                                        <span className="rounded-full border border-white/60 bg-white/50 px-2.5 py-1 text-[10px] font-semibold text-stone-500 dark:border-white/10 dark:bg-white/5 dark:text-stone-300">Individual view</span>
+                                                    </div>
+
+                                                    <dl className="mt-4">
+                                                        {[
+                                                            { label: "Category", value: app.category || "Uncategorised" },
+                                                            { label: "Budget", value: money(Number(app.budget)) },
+                                                            { label: "Deadline", value: formatDeadline(app.deadline) },
+                                                            { label: "Lender", value: `#${app.lender_id}` },
+                                                            { label: "Capital share", value: `${share.toFixed(1)}%` },
+                                                        ].map((item) => (
+                                                            <div key={item.label} className="flex items-center justify-between gap-3 border-b border-white/50 py-2.5 last:border-0 dark:border-white/5">
+                                                                <dt className="text-[11px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500">{item.label}</dt>
+                                                                <dd className="text-right text-xs font-semibold text-stone-800 dark:text-stone-100">{item.value}</dd>
+                                                            </div>
+                                                        ))}
+                                                    </dl>
+
+                                                    <div className="mt-4 rounded-2xl border border-white/60 bg-white/40 p-4 dark:border-white/10 dark:bg-white/5">
+                                                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">Scope &amp; requirements</p>
+                                                        <p className="mt-2 text-xs leading-relaxed text-stone-600 dark:text-stone-300">{app.description || "No description provided."}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="lg:col-span-7">
+                                                    <div className="rounded-3xl border border-white/60 bg-white/40 p-5 dark:border-white/10 dark:bg-white/5 sm:p-6">
+                                                        <div className="flex items-center justify-between gap-3">
+                                                            <div>
+                                                                <h3 className="text-sm font-semibold text-stone-900 dark:text-white">Apply for this tender</h3>
+                                                                <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">Complete the details below to submit your application.</p>
+                                                            </div>
+                                                            <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} />
+                                                        </div>
+
+                                                        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <div>
+                                                                <label htmlFor={`applicant-name-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Full name</label>
+                                                                <input id={`applicant-name-${app.id}`} type="text" placeholder="Your full name" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div>
+                                                                <label htmlFor={`applicant-email-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Email address</label>
+                                                                <input id={`applicant-email-${app.id}`} type="email" placeholder="you@company.co.ke" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div>
+                                                                <label htmlFor={`applicant-phone-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Phone number</label>
+                                                                <input id={`applicant-phone-${app.id}`} type="tel" placeholder="+254 7XX XXX XXX" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div>
+                                                                <label htmlFor={`applicant-company-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Company / organisation</label>
+                                                                <input id={`applicant-company-${app.id}`} type="text" placeholder="Company name" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div className="sm:col-span-2">
+                                                                <label htmlFor={`applicant-amount-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Proposed amount (KSh)</label>
+                                                                <input id={`applicant-amount-${app.id}`} type="number" placeholder="0" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div className="sm:col-span-2">
+                                                                <label htmlFor={`applicant-note-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Cover note</label>
+                                                                <textarea id={`applicant-note-${app.id}`} rows={4} placeholder="Briefly describe your approach and capacity" className={APPLICATION_INPUT} />
+                                                            </div>
+                                                            <div className="sm:col-span-2">
+                                                                <label htmlFor={`applicant-file-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Supporting document <span className="font-normal text-stone-400 dark:text-stone-500">(optional)</span></label>
+                                                                <input id={`applicant-file-${app.id}`} type="file" className="w-full rounded-2xl border border-dashed border-white/70 bg-white/40 px-4 py-3 text-xs text-stone-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-white dark:border-white/15 dark:bg-white/5 dark:text-stone-300" />
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td className="px-3 py-4">
-                                                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ring-1 ${style.chip}`}>
-                                                            <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
-                                                            {app.category || "Uncategorised"}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 py-4">
-                                                        <span className="flex items-center gap-2">
-                                                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-stone-700 to-stone-900 text-[10px] font-bold text-white dark:from-emerald-500 dark:to-cyan-600">L{app.lender_id}</span>
-                                                            <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">#{app.lender_id}</span>
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 py-4 text-right">
-                                                        <p className="text-sm font-semibold text-stone-900 dark:text-white">{money(Number(app.budget))}</p>
-                                                    </td>
-                                                    <td className="px-3 py-4">
-                                                        <p className="text-xs font-medium text-stone-700 dark:text-stone-200">{formatDeadline(app.deadline)}</p>
-                                                    </td>
-                                                    <td className="px-5 py-4">
-                                                        <div className="flex items-center justify-end gap-2">
-                                                            <span className="h-1.5 w-20 overflow-hidden rounded-full bg-stone-900/5 dark:bg-white/10">
-                                                                <span className={`block h-full rounded-full ${style.bar}`} style={{ width: `${Math.max(share, 2)}%` }} />
-                                                            </span>
-                                                            <span className="w-10 text-right text-[11px] font-semibold text-stone-500 dark:text-stone-400">{share.toFixed(1)}%</span>
+
+                                                        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/50 pt-5 dark:border-white/10">
+                                                            <p className="max-w-xs text-[11px] leading-relaxed text-stone-500 dark:text-stone-400">Your application details will be shared with the lender for review.</p>
+                                                            <button type="button" className={APPLY_BUTTON}>
+                                                                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_100%)]" />
+                                                                <span className="relative">Apply Tender</span>
+                                                            </button>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </details>
+                                )
+                            })}
                         </div>
                     )}
 
