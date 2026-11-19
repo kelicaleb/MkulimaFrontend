@@ -86,7 +86,7 @@ const GLASS_PANEL =
   "border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.55)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_40px_-16px_rgba(6,78,59,0.35)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(24,36,31,0.9)_0%,rgba(10,17,14,0.85)_100%)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_44px_-16px_rgba(0,0,0,0.8)]"
 
 const APPLICATION_INPUT =
-  "liquid-input w-full rounded-2xl border border-white/60 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500/70 dark:border-white/15 dark:text-white dark:placeholder:text-slate-500"
+  "w-full rounded-2xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.7)_100%)] px-4 py-3 text-sm text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-1px_0_rgba(0,0,0,0.04),0_8px_18px_-12px_rgba(6,78,59,0.3)] outline-none transition placeholder:text-slate-400 focus:border-emerald-500/70 focus:shadow-[0_0_0_2px_rgba(16,185,129,0.22)] dark:border-white/15 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.05)_100%)] dark:text-white dark:placeholder:text-slate-400 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.25),0_10px_22px_-14px_rgba(0,0,0,0.6)] dark:focus:border-emerald-400/60 dark:focus:shadow-[0_0_0_2px_rgba(52,211,153,0.18)]"
 
 const APPLY_BUTTON =
   "group relative w-full overflow-hidden rounded-2xl border border-white/50 bg-[linear-gradient(180deg,rgba(52,211,153,0.92)_0%,rgba(5,150,105,0.95)_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_10px_24px_-12px_rgba(5,150,105,0.6)] transition duration-200 hover:-translate-y-0.5 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-emerald-400/40 sm:w-auto sm:min-w-[11rem] dark:border-white/20"
@@ -95,15 +95,64 @@ const APPLY_BUTTON =
 
 export default function Tenders(){
     const [applications, setApplications ] = useState<Tender[]>([])
+    const [tenderId, setTenderId] = useState<string>('')
+    const [company, setCompany ] = useState<string>('')
+    const [bidAmount, setBidAmount ] = useState<number>(0)
+    const [file, setFile ] = useState<File | null>(null)
+    const [notice, setNotice ] = useState<{ type: "success" | "error"; message: string } | null>(null)
+    const [control, setControl ] = useState(false)
+
+    const handleApply = async(data:Tender) => { 
+        if (Number(bidAmount) > Number(data.budget || 0)) {
+            setNotice({ type: "error", message: "Cannot bid greater than budget" })
+            setTimeout(() => setNotice(null), 5000)
+            return
+        }
+        try{ 
+            const user_id = localStorage.getItem("user_id")
+            const form = new FormData() 
+            form.append("tender_id", String(data.id))
+            form.append("user_id", user_id ?? "")
+            form.append("company_name", company)
+            form.append("bid_amount", String(bidAmount))
+            form.append("proposal_file", file ?? "")
+
+
+
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tenderapplication/createTenderApplication/${user_id}`,  
+              form
+            )
+            console.log("Successfully posted", res)
+            setNotice({ type: "success", message: "Tender application submitted successfully." })
+            setTimeout(() => setNotice(null), 4000)
+            setControl(!control)
+        }
+        catch(err){ 
+            console.error("Failed to bid for tender", err)
+            let message = "Failed to apply tender. Please try again."
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status === 400) {
+                    message = err.response.data?.message || "Cannot bid greater than budget"
+                } else if (err.response?.status === 500) {
+                    message = err.response.data?.message || "Internal server error"
+                }
+            }
+            setNotice({ type: "error", message })
+            setTimeout(() => setNotice(null), 5000)
+        }
+    }
+
     useEffect(() => { 
         if(localStorage.getItem("user_id") == "null"){ 
             window.location.href = "/login"
         }
+        setControl(!control)
     },[])
     useEffect(() => { 
         const fetchData = async()=> { 
-            try{ 
-                await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tender`)
+            try{
+                const user_id = localStorage.getItem("user_id") 
+                await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tender/availableTenders/${user_id}`)
                 .then((res) => setApplications(res.data))
             }
             catch(err){ 
@@ -143,6 +192,33 @@ export default function Tenders(){
     return(
         <>
         <Navbar/>
+        {notice && (
+            <div
+                role="alert"
+                aria-live="assertive"
+                className={`fixed right-4 top-4 z-50 flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 overflow-hidden rounded-2xl border p-4 shadow-[0_18px_45px_-18px_rgba(6,78,59,0.55)] backdrop-blur-2xl backdrop-saturate-150 ${
+                    notice.type === "success"
+                        ? "border-emerald-300/60 bg-[linear-gradient(180deg,rgba(236,253,245,0.95)_0%,rgba(209,250,229,0.88)_100%)] text-emerald-950 dark:border-emerald-400/30 dark:bg-[linear-gradient(180deg,rgba(6,60,42,0.94)_0%,rgba(6,95,70,0.6)_100%)] dark:text-emerald-50"
+                        : "border-red-300/60 bg-[linear-gradient(180deg,rgba(254,242,242,0.95)_0%,rgba(254,226,226,0.88)_100%)] text-red-900 dark:border-red-400/30 dark:bg-[linear-gradient(180deg,rgba(69,10,10,0.94)_0%,rgba(127,29,29,0.6)_100%)] dark:text-red-50"
+                }`}
+            >
+                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/20" />
+                <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${notice.type === "success" ? "bg-emerald-600" : "bg-red-600"}`}>
+                    <span className="text-[11px] font-bold text-white">{notice.type === "success" ? "✓" : "!"}</span>
+                </span>
+                <p className="min-w-0 flex-1 text-sm font-medium">{notice.message}</p>
+                <button
+                    type="button"
+                    onClick={() => setNotice(null)}
+                    aria-label="Dismiss notification"
+                    className="shrink-0 rounded-full p-1 opacity-60 transition hover:bg-white/60 hover:opacity-100 dark:hover:bg-white/10"
+                >
+                    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+                        <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                </button>
+            </div>
+        )}
         <div className="relative min-h-screen overflow-hidden">
             <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
                 <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/80 via-[#f5f7f3] to-[#f5f7f3] dark:from-emerald-950/30 dark:via-[#070d0a] dark:to-[#070d0a]" />
@@ -390,38 +466,46 @@ export default function Tenders(){
 
                                                         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                             <div>
-                                                                <label htmlFor={`applicant-name-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Full name</label>
-                                                                <input id={`applicant-name-${app.id}`} type="text" placeholder="Your full name" className={APPLICATION_INPUT} />
+                                                                <label htmlFor={`applicant-company-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Company Name</label>
+                                                                <input id={`applicant-company-${app.id}`} type="text" placeholder="Your company name" className={APPLICATION_INPUT} value={company}  onChange={e => setCompany(e.target.value)} />
                                                             </div>
                                                             <div>
-                                                                <label htmlFor={`applicant-email-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Email address</label>
-                                                                <input id={`applicant-email-${app.id}`} type="email" placeholder="you@company.co.ke" className={APPLICATION_INPUT} />
-                                                            </div>
-                                                            <div>
-                                                                <label htmlFor={`applicant-phone-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Phone number</label>
-                                                                <input id={`applicant-phone-${app.id}`} type="tel" placeholder="+254 7XX XXX XXX" className={APPLICATION_INPUT} />
-                                                            </div>
-                                                            <div>
-                                                                <label htmlFor={`applicant-company-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Company / organisation</label>
-                                                                <input id={`applicant-company-${app.id}`} type="text" placeholder="Company name" className={APPLICATION_INPUT} />
-                                                            </div>
-                                                            <div className="sm:col-span-2">
-                                                                <label htmlFor={`applicant-amount-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Proposed amount (KSh)</label>
-                                                                <input id={`applicant-amount-${app.id}`} type="number" placeholder="0" className={APPLICATION_INPUT} />
-                                                            </div>
-                                                            <div className="sm:col-span-2">
-                                                                <label htmlFor={`applicant-note-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Cover note</label>
-                                                                <textarea id={`applicant-note-${app.id}`} rows={4} placeholder="Briefly describe your approach and capacity" className={APPLICATION_INPUT} />
+                                                                <label htmlFor={`applicant-bid-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Bid Amount</label>
+                                                                <div className="relative">
+                                                                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-stone-400 dark:text-stone-500">KSh</span>
+                                                                    <input id={`applicant-bid-${app.id}`} type="number" placeholder="0" className={`${APPLICATION_INPUT} pl-12 ${bidAmount > Number(app.budget || 0) ? "border-red-400/70 focus:border-red-500/70 focus:shadow-[0_0_0_2px_rgba(239,68,68,0.22)] dark:border-red-400/50 dark:focus:border-red-400/70 dark:focus:shadow-[0_0_0_2px_rgba(248,113,113,0.18)]" : ""}`} value={bidAmount} onChange={e => setBidAmount(Number(e.target.value))} />
+                                                                </div>
+                                                                {bidAmount > Number(app.budget || 0) && (
+                                                                    <div className="mt-2 flex items-start gap-2 rounded-xl border border-red-300/60 bg-red-50/80 px-3 py-2 text-[11px] font-medium text-red-700 dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-300">
+                                                                        <svg viewBox="0 0 20 20" fill="none" className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden>
+                                                                            <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.6" />
+                                                                            <path d="M10 6v4.5M10 13.5h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                                                                        </svg>
+                                                                        <span>Bid amount cannot exceed the tender budget ({money(Number(app.budget))}).</span>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                             <div className="sm:col-span-2">
-                                                                <label htmlFor={`applicant-file-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Supporting document <span className="font-normal text-stone-400 dark:text-stone-500">(optional)</span></label>
-                                                                <input id={`applicant-file-${app.id}`} type="file" className="w-full rounded-2xl border border-dashed border-white/70 bg-white/40 px-4 py-3 text-xs text-stone-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-white dark:border-white/15 dark:bg-white/5 dark:text-stone-300" />
+                                                                <label htmlFor={`applicant-proposal-${app.id}`} className="mb-1.5 block text-xs font-medium text-stone-700 dark:text-stone-200">Proposal file</label>
+                                                                <div className="relative">
+                                                                    <label htmlFor={`applicant-proposal-${app.id}`} className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-emerald-400/50 bg-white/40 px-4 py-6 text-center transition hover:border-emerald-500/70 hover:bg-white/60 dark:border-emerald-400/20 dark:bg-white/5 dark:hover:border-emerald-400/40 dark:hover:bg-white/10">
+                                                                        <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/60 bg-white/60 text-emerald-600 dark:border-white/10 dark:bg-white/10 dark:text-emerald-300">
+                                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                                                                                <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5" />
+                                                                                <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span className="max-w-full truncate text-xs font-medium text-stone-600 dark:text-stone-300">{file ? file.name : "Click to upload your proposal"}</span>
+                                                                        <span className="text-[10px] text-stone-400 dark:text-stone-500">{file ? `${(file.size / 1024).toFixed(0)} KB · Click to replace` : "PDF, DOC or DOCX"}</span>
+                                                                    </label>
+                                                                    <input id={`applicant-proposal-${app.id}`} type="file" accept=".pdf,.doc,.docx" className="absolute inset-0 h-full w-full cursor-pointer opacity-0" onChange={e => setFile(e.target.files?.[0]|| null)} />
+                                                                </div>
                                                             </div>
                                                         </div>
 
-                                                        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/50 pt-5 dark:border-white/10">
+                                                        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/60 pt-5 dark:border-white/10">
                                                             <p className="max-w-xs text-[11px] leading-relaxed text-stone-500 dark:text-stone-400">Your application details will be shared with the lender for review.</p>
-                                                            <button type="button" className={APPLY_BUTTON}>
+                                                            <button onClick={() => handleApply(app)} className={APPLY_BUTTON}>
                                                                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_100%)]" />
                                                                 <span className="relative">Apply Tender</span>
                                                             </button>

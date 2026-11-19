@@ -1,5 +1,5 @@
 "use client"
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import axios from 'axios'
 
 
@@ -8,6 +8,10 @@ export default function Login(){
     const [email, setEmail ] = useState<string>('')
     const [password, setPassword ] = useState<string>('')
     const [notice, setNotice] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+    useEffect(() => { 
+        localStorage.setItem("user_id", "null")
+    },[])
 
 
     const handleLogin = async(e:any) => { 

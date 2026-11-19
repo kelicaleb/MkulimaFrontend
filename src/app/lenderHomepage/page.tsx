@@ -764,6 +764,24 @@ function LenderHomepageContent() {
   const [range, setRange] = useState<6 | 12 | 24>(12)
   const [filter, setFilter] = useState("all")
 
+  useEffect(() => { 
+    const fecthUser = async()=> { 
+      try{ 
+        const user_id = localStorage.getItem("user_id")
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user_id}`)
+        console.log("this the user role ", user_id)
+        if(res.data.role != "Lender" || res.data.role == null){ 
+          window.location.href = "/login"
+        }
+      }
+      catch(err){ 
+        console.error("Failed to find user", err)
+        
+      }
+    }
+    fecthUser()
+  },[]) 
+
   const backend = process.env.NEXT_PUBLIC_BACKEND_URL
   const router = useRouter()
 
